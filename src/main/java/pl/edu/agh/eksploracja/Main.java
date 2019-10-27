@@ -1,3 +1,5 @@
+package pl.edu.agh.eksploracja;
+
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -19,11 +21,11 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
         int counter = 0;
-
+        System.out.println("Data fetcher started");
         while (true) {
             getData();
-            Thread.sleep(1000*60*3);
-            if (++counter % 20 == 0) {
+            Thread.sleep(1000 * 60);
+            if (++counter % 60 == 0) {
                 mergeFiles();
             }
         }
@@ -58,6 +60,7 @@ public class Main {
             }
             writer.write("}");
             listOfFiles.forEach(File::delete);
+            System.out.println("Files merged to: " + fileName);
         } catch (IOException ignored) {
 
         }
