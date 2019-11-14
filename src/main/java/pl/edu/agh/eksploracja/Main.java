@@ -19,7 +19,7 @@ public class Main {
 
     private static final CloseableHttpClient httpClient = HttpClients.createDefault();
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, FileNotFoundException {
         long counter = 0;
         System.out.println("Data fetcher started");
         while (true) {
@@ -33,7 +33,7 @@ public class Main {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy_HH:mm:ss", Locale.forLanguageTag("pl"));
 
-    private static void mergeFiles() {
+    private static void mergeFiles() throws FileNotFoundException {
         File folder = new File("./hive");
 
         List<File> listOfFiles = Arrays.asList(Objects.requireNonNull(folder.listFiles()));
@@ -61,8 +61,6 @@ public class Main {
             writer.write("}");
             listOfFiles.forEach(File::delete);
             System.out.println("Files merged to: " + fileName);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
