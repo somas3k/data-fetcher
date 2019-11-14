@@ -20,7 +20,7 @@ public class Main {
     private static final CloseableHttpClient httpClient = HttpClients.createDefault();
 
     public static void main(String[] args) throws InterruptedException {
-        int counter = 0;
+        long counter = 0;
         System.out.println("Data fetcher started");
         while (true) {
             getData();
@@ -61,8 +61,8 @@ public class Main {
             writer.write("}");
             listOfFiles.forEach(File::delete);
             System.out.println("Files merged to: " + fileName);
-        } catch (IOException ignored) {
-
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
