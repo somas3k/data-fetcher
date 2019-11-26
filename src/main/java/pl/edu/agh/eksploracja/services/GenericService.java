@@ -8,7 +8,7 @@ abstract class GenericService<T extends Entity> implements Service<T> {
 
     private static final int DEPTH_LIST = 0;
     private static final int DEPTH_ENTITY = 1;
-    private Session session = Neo4jSessionFactory.getInstance().getNeo4jSession();
+    protected Session session = Neo4jSessionFactory.getInstance().getNeo4jSession();
 
     @Override
     public Iterable<T> findAll() {

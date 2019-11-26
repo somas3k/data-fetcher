@@ -12,7 +12,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Builder
-public class ScooterToLocation {
+public class ScooterToLocation implements Entity {
     static final String TYPE = "STAYS_AT";
     @Id
     @GeneratedValue
@@ -40,4 +40,9 @@ public class ScooterToLocation {
 
     @Transient
     String toTimestamp;
+
+    @Override
+    public Long getEntityId() {
+        return id;
+    }
 }
