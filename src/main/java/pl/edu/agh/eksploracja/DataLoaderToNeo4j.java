@@ -42,6 +42,8 @@ public class DataLoaderToNeo4j {
     public static void main(String[] args) {
         loader.loadLocations();
 
+        loader.loadScootersIfSaved();
+
         File folder = new File("./hive/merged");
         long start = System.currentTimeMillis();
         List<File> files = Arrays.asList(Objects.requireNonNull(folder.listFiles()));
@@ -63,6 +65,13 @@ public class DataLoaderToNeo4j {
         System.out.println("Ending...");
         long timeTaken = System.currentTimeMillis() - start;
         System.out.println("Time to load data: " + (double) timeTaken / 60000.0 + " minutes." );
+    }
+
+    private void loadScootersIfSaved() {
+        Collection<Scooter> scooters = scooterService.findAll();
+        if (!scooters.isEmpty()) {
+            scooters.forEach(scooter -> carIdToSavedScooter.put(scooter.getCarId(), scooter));
+        }
     }
 
     private static String getFirstDateFromFileName(File file1) {
@@ -162,17 +171,22 @@ public class DataLoaderToNeo4j {
     }
 
     private void loadLocations() {
-        File f = new File("poi.txt");
+        Collection<Location> locations = locationService.findAll();
+        if (locations.isEmpty()) {
+            File f = new File("poi.txt");
 
-        try (InputStream s = new BufferedInputStream(new FileInputStream(f))) {
-            ObjectMapper mapper = new ObjectMapper();
-            locations = mapper.readValue(s, new TypeReference<Set<Location>>() {
-            });
+            try (InputStream s = new BufferedInputStream(new FileInputStream(f))) {
+                ObjectMapper mapper = new ObjectMapper();
+                this.locations = mapper.readValue(s, new TypeReference<Set<Location>>() {
+                });
 
-        } catch (IOException e) {
-            e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            putLocationsToDatabase();
+        } else {
+            this.locations = new HashSet<>(locations);
         }
-        putLocationsToDatabase();
     }
 
     public static class LocationTypeSetDeserializer extends JsonDeserializer<Set<LocationType>> {

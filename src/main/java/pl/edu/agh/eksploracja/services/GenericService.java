@@ -4,6 +4,8 @@ import org.neo4j.ogm.session.Session;
 import pl.edu.agh.eksploracja.Neo4jSessionFactory;
 import pl.edu.agh.eksploracja.domain.Entity;
 
+import java.util.Collection;
+
 abstract class GenericService<T extends Entity> implements Service<T> {
 
     private static final int DEPTH_LIST = 0;
@@ -11,7 +13,7 @@ abstract class GenericService<T extends Entity> implements Service<T> {
     protected Session session = Neo4jSessionFactory.getInstance().getNeo4jSession();
 
     @Override
-    public Iterable<T> findAll() {
+    public Collection<T> findAll() {
         return session.loadAll(getEntityType(), DEPTH_LIST);
     }
 

@@ -7,7 +7,7 @@ import org.neo4j.ogm.session.SessionFactory;
 public class Neo4jSessionFactory {
 
     private final static Configuration configuration =  new Configuration.Builder()
-            .uri("bolt://172.20.75.118")
+            .uri("bolt://192.168.56.102/")
             .credentials("neo4j", "hive")
             .build();
     private final static SessionFactory sessionFactory = new SessionFactory(configuration, "pl.edu.agh.eksploracja.domain");
